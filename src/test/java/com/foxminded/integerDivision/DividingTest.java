@@ -8,7 +8,7 @@ import java.math.BigInteger;
 
 import static org.junit.Assert.*;
 
-public class DivisionTest {
+public class DividingTest {
 
     Dividing division;
     BigInteger positiveDividend;
