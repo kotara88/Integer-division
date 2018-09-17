@@ -4,61 +4,101 @@ package com.foxminded.integerDivision;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.math.BigInteger;
+
 import static org.junit.Assert.*;
 
 public class DivisionTest {
 
-    Division division;
-    int evenDividendIsBiggerThanDivisor;
-    int oddDividendIsBiggerThanDivisor;
-    int dividendIsLessThanDivisor;
-    int divisor;
-    int zeroDivisor;
+    Dividing division;
+    BigInteger positiveDividend;
+    BigInteger negativeDividend;
+    BigInteger positiveDivisor;
+    BigInteger negativeDivisor;
+    BigInteger zeroDivisor;
+    BigInteger dividendIsLessThanDivisor;
+    String expectedWhenDividendIsPositive;
+    String expectedWhenDividendIsNegative;
+    String expectedWhenDividendAndDivisorAreNegative;
+    String expectedWhenDividendIsPositiveAndDivisorIsNegative;
+    String expectedWhenDivisorIsZero;
+    String expectedWhenDividendIsLessThanDivisor;
 
     @Before
     public void initialize(){
-        division = new Division();
-        evenDividendIsBiggerThanDivisor = 147;
-        oddDividendIsBiggerThanDivisor = 146;
-        dividendIsLessThanDivisor = 1;
-        divisor = 2;
-        zeroDivisor = 0;
+        division = new Dividing();
+        negativeDividend = new BigInteger("-1234");
+        positiveDividend = new BigInteger("1234");
+        positiveDivisor = new BigInteger("12");
+        negativeDivisor = new BigInteger("-12");
+        zeroDivisor = BigInteger.ZERO;
+        dividendIsLessThanDivisor = new BigInteger("1");
+        expectedWhenDividendIsPositive =
+                "_1234│12\n" +
+                        " 12  │---\n" +
+                        " --  │102\n" +
+                        "  _34\n" +
+                        "   24\n" +
+                        "   --\n" +
+                        "   10";
+        expectedWhenDividendIsNegative =
+                "_-1234│12\n" +
+                        "  12  │----\n" +
+                        "  --  │-102\n" +
+                        "   _34\n" +
+                        "    24\n" +
+                        "    --\n" +
+                        "    10";
+        expectedWhenDividendAndDivisorAreNegative =
+                "_-1234│-12\n" +
+                        "  12  │---\n" +
+                        "  --  │102\n" +
+                        "   _34\n" +
+                        "    24\n" +
+                        "    --\n" +
+                        "    10";
+        expectedWhenDividendIsPositiveAndDivisorIsNegative =
+                "_1234│-12\n" +
+                        " 12  │----\n" +
+                        " --  │-102\n" +
+                        "  _34\n" +
+                        "   24\n" +
+                        "   --\n" +
+                        "   10";
+        expectedWhenDivisorIsZero = "Divisor can't be zero! Input again.";
+        expectedWhenDividendIsLessThanDivisor =  "1/12 = 0" ;
 
     }
 
+
     @Test
-    public void mustMakeDivision_WhenEvenDividendIsBiggerThanDivisor() {
-        String expected =   "_147│2\n" +
-                " 14 │--\n" +
-                " -- │73\n" +
-                "  _7\n" +
-                "   6\n" +
-                "   -\n" +
-                "   1\n";
-        assertEquals(expected, division.makeDivision(evenDividendIsBiggerThanDivisor, divisor));
+    public void mustMakeDivision_WhenDividendAndDivisorArePositive() {
+        assertEquals(expectedWhenDividendIsPositive, division.makeDivision(positiveDividend, positiveDivisor));
     }
 
     @Test
-    public void mustMakeDivision_WhenOddDividendIsBiggerThanDivisor() {
-        String expected =   "_146│2\n" +
-                " 14 │--\n" +
-                " -- │73\n" +
-                "  _6\n" +
-                "   6\n" +
-                "   -\n" +
-                "   0\n";
-        assertEquals(expected, division.makeDivision(oddDividendIsBiggerThanDivisor, divisor));
+    public void mustMakeDivision_WhenDividendIsNegativeAndDivisorIsPositive() {
+        assertEquals(expectedWhenDividendIsNegative, division.makeDivision(negativeDividend, positiveDivisor));
+    }
+
+    @Test
+    public void mustMakeDivision_WhenDividendAndDivisorAreNegative() {
+        assertEquals(expectedWhenDividendAndDivisorAreNegative, division.makeDivision(negativeDividend, negativeDivisor));
+    }
+
+    @Test
+    public void mustMakeDivision_WhenDividendIsPositiveAndDivisorIsNegative() {
+        assertEquals(expectedWhenDividendIsPositiveAndDivisorIsNegative, division.makeDivision(positiveDividend, negativeDivisor));
+    }
+
+    @Test
+    public void mustMakeDivision_expectedWhenDividendIsZero() {
+        assertEquals(expectedWhenDivisorIsZero, division.makeDivision(positiveDividend, zeroDivisor));
     }
 
     @Test
     public void mustMakeDivision_WhenDividendIsLessThanDivisor() {
-        String expected =  "1/2=0" ;
-        assertEquals(expected, division.makeDivision(dividendIsLessThanDivisor, divisor));
+        assertEquals(expectedWhenDividendIsLessThanDivisor, division.makeDivision(dividendIsLessThanDivisor, positiveDivisor));
     }
 
-    @Test
-    public void mustMakeWarning_WhenDividendIsZero() {
-        String expected =  "Divisor cannot be 0" ;
-        assertEquals(expected, division.makeDivision(dividendIsLessThanDivisor, zeroDivisor));
-    }
 }
