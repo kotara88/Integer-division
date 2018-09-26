@@ -11,28 +11,27 @@ public class Divider {
         StringBuilder reminder = new StringBuilder();
 
         for (int i = 0; i < digits.length; i++) {
-            result = createColumnOfDividing(divisor, reminder, digits, i, result);
+            createColumnOfDividing(divisor, reminder, digits, i, result);
         }
-        result = modifyResultToPrint(dividend, divisor, result);
+        modifyResultToPrint(dividend, divisor, result);
         if (dividend < 0) {
             result = modifyResultToPrintWhenDividendIsNegative(result);
         }
         return result.toString().trim();
     }
 
-    private StringBuilder createColumnOfDividing(int divisor,
-                                                 StringBuilder reminder, String[] digits, int i, StringBuilder result) {
+    private void createColumnOfDividing(int divisor,
+                                        StringBuilder reminder, String[] digits, int i, StringBuilder result) {
         reminder.append(digits[i]);
         int reminderNumber = Integer.parseInt(reminder.toString());
 
         if (reminderNumber >= Math.abs(divisor)) {
-            result = createIndent(divisor, reminderNumber, reminder, digits, i, result);
+            createIndent(divisor, reminderNumber, reminder, digits, i, result);
         }
-        return result;
     }
 
-    private StringBuilder createIndent(int divisor, Integer reminderNumber,
-                                       StringBuilder reminder, String[] digits, int i, StringBuilder result) {
+    private void createIndent(int divisor, Integer reminderNumber,
+                              StringBuilder reminder, String[] digits, int i, StringBuilder result) {
         int resultOfMultiply = reminderNumber / divisor * divisor;
         int mod = reminderNumber % divisor;
         String lastReminder = String.format("%" + (i + 2) + "s", "_" + reminderNumber);
@@ -46,7 +45,6 @@ public class Divider {
         if (i == digits.length - 1) {
             result.append(String.format("%" + (i + 2) + "s", reminderNumber.toString())).append("\n");
         }
-        return result;
     }
 
     private String createSeparateLine(int reminderNumber, Integer tab) {
@@ -62,7 +60,7 @@ public class Divider {
         return assembledString.toString();
     }
 
-    private StringBuilder modifyResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
+    private void modifyResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
         ArrayList<Integer> indexesOfLinesBreak = findIndexesOfLinesBreak(result);
 
         int tab = String.valueOf(dividend).length() + 1 - indexesOfLinesBreak.get(0);
@@ -74,7 +72,6 @@ public class Divider {
 
         result.insert(indexesOfLinesBreak.get(0), "│" + divisor);
         result.replace(1, indexesOfLinesBreak.get(0), dividend + "");
-        return result;
     }
 
     private StringBuilder modifyResultToPrintWhenDividendIsNegative(StringBuilder result) {
