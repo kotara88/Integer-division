@@ -4,7 +4,7 @@ package com.foxminded.integerDivision;
 import java.util.ArrayList;
 
 public class Divider {
-    
+
     public String doDivision(int dividend, int divisor) throws ArithmeticException {
         StringBuilder result = new StringBuilder();
         String[] digits = String.valueOf(Math.abs(dividend)).split("");
@@ -22,14 +22,13 @@ public class Divider {
 
     private StringBuilder createColumnOfDividing(int divisor,
                                                  StringBuilder reminder, String[] digits, int i, StringBuilder result) {
-        StringBuilder builder = result;
         reminder.append(digits[i]);
         int reminderNumber = Integer.parseInt(reminder.toString());
 
         if (reminderNumber >= Math.abs(divisor)) {
-            builder = createIndent(divisor, reminderNumber, reminder, digits, i, builder);
+            result = createIndent(divisor, reminderNumber, reminder, digits, i, result);
         }
-        return builder;
+        return result;
     }
 
     private StringBuilder createIndent(int divisor, Integer reminderNumber,
