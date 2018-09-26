@@ -24,33 +24,31 @@ public class Main {
                 continue;
             }
 
+
             int divisor;
-            while (flag) {
-                System.out.println("Input a divider");
-                String dividerStr = scanner.nextLine();
+            System.out.println("Input a divider");
+            String dividerStr = scanner.nextLine();
 
-                if (dividerStr.equals("0")) {
-                    System.out.println("Divisor can't be zero!! Input divider again.");
-                    continue;
-                }
-
-                try {
-                    divisor = Integer.parseInt(dividerStr);
-
-                    System.out.println("Result: ");
-                    Divider divider = new Divider();
-
-                    if (Math.abs(dividend) < divisor)
-                        System.out.println(dividend + "/" + divisor + " = " + dividend / divisor);
-                    else
-                        System.out.println(divider.makeDivision(dividend, divisor));
-                    System.out.println();
-                    flag = false;
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid number format! Input divider again.");
-                }
+            if (dividerStr.equals("0")) {
+                System.out.println("Divisor can't be zero!!");
+                continue;
             }
-            flag = true;
+
+            try {
+                divisor = Integer.parseInt(dividerStr);
+
+                System.out.println("Result: ");
+                Divider divider = new Divider();
+
+                if (Math.abs(dividend) < divisor)
+                    System.out.println(dividend + "/" + divisor + " = " + dividend / divisor);
+                else
+                    System.out.println(divider.doDivision(dividend, divisor));
+
+                System.out.println();
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format!");
+            }
         }
 
     }

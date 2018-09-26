@@ -61,30 +61,30 @@ public class DividerTest {
 
 
     @Test
-    public void mustMakeDivision_WhenDividendAndDivisorArePositive() {
+    public void mustCreateCorrectDividingProcessString_WhenDividendAndDivisorArePositive() {
         String expected = whenDividendAndDivisorArePositive;
-        String actual = division.makeDivision(positiveDividend, positiveDivisor);
+        String actual = division.doDivision(positiveDividend, positiveDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mustMakeDivision_WhenDividendIsNegativeAndDivisorIsPositive() {
+    public void mustCreateCorrectDividingProcessString_WhenDividendIsNegativeAndDivisorIsPositive() {
         String expected = whenDividendIsNegativeAndDivisorIsPositive;
-        String actual = division.makeDivision(negativeDividend, positiveDivisor);
+        String actual = division.doDivision(negativeDividend, positiveDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mustMakeDivision_WhenDividendAndDivisorAreNegative() {
+    public void mustCreateCorrectDividingProcessString_WhenDividendAndDivisorAreNegative() {
         String expected = whenDividendAndDivisorAreNegative;
-        String actual = division.makeDivision(negativeDividend, negativeDivisor);
+        String actual = division.doDivision(negativeDividend, negativeDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void mustMakeDivision_WhenDividendIsPositiveAndDivisorIsNegative() {
+    public void mustCreateCorrectDividingProcessString_WhenDividendIsPositiveAndDivisorIsNegative() {
         String expected = whenDividendIsPositiveAndDivisorIsNegative;
-        String actual =  division.makeDivision(positiveDividend, negativeDivisor);
+        String actual =  division.doDivision(positiveDividend, negativeDivisor);
         assertEquals(expected,actual);
     }
 
