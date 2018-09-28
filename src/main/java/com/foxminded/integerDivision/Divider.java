@@ -5,23 +5,30 @@ import java.util.ArrayList;
 
 public class Divider {
 
-    public String doDivision(int dividend, int divisor) throws ArithmeticException {
+    public String doDivision(int dividend, int divisor) {
+
+        if (divisor == 0)
+            throw new IllegalArgumentException();
+
         StringBuilder result = new StringBuilder();
         String[] digits = String.valueOf(Math.abs(dividend)).split("");
         StringBuilder reminder = new StringBuilder();
+        String finalResult = createFinalResult(digits, dividend, divisor, reminder, result);
+        return finalResult;
+    }
 
+    private String createFinalResult(String[] digits, int dividend, int divisor, StringBuilder reminder, StringBuilder result){
         for (int i = 0; i < digits.length; i++) {
-            createColumnOfDividing(divisor, reminder, digits, i, result);
+            createDividingColumn(divisor, reminder, digits, i, result);
         }
         modifyResultToPrint(dividend, divisor, result);
         if (dividend < 0) {
-            result = modifyResultToPrintWhenDividendIsNegative(result);
+            result = modifyResultToPrintNegativeDividend(result);
         }
         return result.toString().trim();
     }
 
-    private void createColumnOfDividing(int divisor,
-                                        StringBuilder reminder, String[] digits, int i, StringBuilder result) {
+    private void createDividingColumn(int divisor, StringBuilder reminder, String[] digits, int i, StringBuilder result) {
         reminder.append(digits[i]);
         int reminderNumber = Integer.parseInt(reminder.toString());
 
@@ -30,15 +37,20 @@ public class Divider {
         }
     }
 
-    private void createIndent(int divisor, Integer reminderNumber,
-                              StringBuilder reminder, String[] digits, int i, StringBuilder result) {
-        int resultOfMultiply = reminderNumber / divisor * divisor;
+    private void createIndent(int divisor, Integer reminderNumber, StringBuilder reminder,
+                              String[] digits, int i, StringBuilder result) {
+        int multiplyResult = reminderNumber / divisor * divisor;
         int mod = reminderNumber % divisor;
         String lastReminder = String.format("%" + (i + 2) + "s", "_" + reminderNumber);
         result.append(lastReminder).append("\n");
-        String multiply = String.format("%" + (i + 2) + "d", resultOfMultiply);
-        result.append(multiply).append("\n");
-        Integer tab = lastReminder.length() - String.valueOf(resultOfMultiply).length();
+        String tabForMultiplyResult = String.format("%" + (i + 2) + "d", multiplyResult);
+        result.append(tabForMultiplyResult).append("\n");
+        abbSeparateLine(lastReminder, multiplyResult, reminderNumber, mod, reminder, digits, result, i);
+    }
+
+    private void abbSeparateLine(String  lastReminder, int multiplyResult, Integer reminderNumber, int mod,
+                                 StringBuilder reminder, String[] digits, StringBuilder result, int i){
+        Integer tab = lastReminder.length() - String.valueOf(multiplyResult).length();
         result.append(createSeparateLine(reminderNumber, tab)).append("\n");
         reminder.replace(0, reminder.length(), mod + "");
         reminderNumber = Integer.parseInt(reminder.toString());
@@ -52,44 +64,44 @@ public class Divider {
                 assembleString(String.valueOf(reminderNumber).length(), '-');
     }
 
-    private String assembleString(int numberOfSymbols, char symbol) {
+    private String assembleString(int symbolsAmount, char symbol) {
         StringBuilder assembledString = new StringBuilder();
-        for (int i = 0; i < numberOfSymbols; i++) {
+        for (int i = 0; i < symbolsAmount; i++) {
             assembledString.append(symbol);
         }
         return assembledString.toString();
     }
 
     private void modifyResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
-        ArrayList<Integer> indexesOfLinesBreak = findIndexesOfLinesBreak(result);
+        ArrayList<Integer> LinesBreakIndexes = findLinesBreakIndexes(result);
 
-        int tab = String.valueOf(dividend).length() + 1 - indexesOfLinesBreak.get(0);
-        result.insert(indexesOfLinesBreak.get(2), assembleString(tab, ' ') +
+        int tab = String.valueOf(dividend).length() + 1 - LinesBreakIndexes.get(0);
+        result.insert(LinesBreakIndexes.get(2), assembleString(tab, ' ') +
                 "│" + dividend / divisor);
 
-        result.insert(indexesOfLinesBreak.get(1), assembleString(tab, ' ') +
+        result.insert(LinesBreakIndexes.get(1), assembleString(tab, ' ') +
                 "│" + assembleString(String.valueOf(dividend / divisor).length(), '-'));
 
-        result.insert(indexesOfLinesBreak.get(0), "│" + divisor);
-        result.replace(1, indexesOfLinesBreak.get(0), dividend + "");
+        result.insert(LinesBreakIndexes.get(0), "│" + divisor);
+        result.replace(1, LinesBreakIndexes.get(0), dividend + "");
     }
 
-    private StringBuilder modifyResultToPrintWhenDividendIsNegative(StringBuilder result) {
-        ArrayList<Integer> indexesOfLinesBreak = findIndexesOfLinesBreak(result);
-        for (int i = indexesOfLinesBreak.size() - 1; i >= 0; i--) {
-            result.insert(indexesOfLinesBreak.get(i) + 1, " ");
+    private StringBuilder modifyResultToPrintNegativeDividend(StringBuilder result) {
+        ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
+        for (int i = linesBreakIndexes.size() - 1; i >= 0; i--) {
+            result.insert(linesBreakIndexes.get(i) + 1, " ");
         }
         result = new StringBuilder(result.toString().replace(" │", "│"));
         return result;
     }
 
-    private ArrayList<Integer> findIndexesOfLinesBreak(StringBuilder result) {
-        ArrayList<Integer> indexesOfLinesBreak = new ArrayList<Integer>();
+    private ArrayList<Integer> findLinesBreakIndexes(StringBuilder result) {
+        ArrayList<Integer> linesBreakIndexes = new ArrayList<Integer>();
         for (int i = 0; i < result.length(); i++) {
             if (result.charAt(i) == '\n') {
-                indexesOfLinesBreak.add(i);
+                linesBreakIndexes.add(i);
             }
         }
-        return indexesOfLinesBreak;
+        return linesBreakIndexes;
     }
 }
