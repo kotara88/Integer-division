@@ -13,17 +13,16 @@ public class Divider {
         StringBuilder result = new StringBuilder();
         String[] digits = String.valueOf(Math.abs(dividend)).split("");
         StringBuilder reminder = new StringBuilder();
-        String finalResult = createFinalResult(digits, dividend, divisor, reminder, result);
-        return finalResult;
+        return createFinalResult(digits, dividend, divisor, reminder, result);
     }
 
     private String createFinalResult(String[] digits, int dividend, int divisor, StringBuilder reminder, StringBuilder result){
         for (int i = 0; i < digits.length; i++) {
             createDividingColumn(divisor, reminder, digits, i, result);
         }
-        modifyResultToPrint(dividend, divisor, result);
+        changeResultToPrint(dividend, divisor, result);
         if (dividend < 0) {
-            result = modifyResultToPrintNegativeDividend(result);
+            result = changeResultToPrintNegativeDividend(result);
         }
         return result.toString().trim();
     }
@@ -45,10 +44,10 @@ public class Divider {
         result.append(lastReminder).append("\n");
         String tabForMultiplyResult = String.format("%" + (i + 2) + "d", multiplyResult);
         result.append(tabForMultiplyResult).append("\n");
-        abbSeparateLine(lastReminder, multiplyResult, reminderNumber, mod, reminder, digits, result, i);
+        addSeparateLine(lastReminder, multiplyResult, reminderNumber, mod, reminder, digits, result, i);
     }
 
-    private void abbSeparateLine(String  lastReminder, int multiplyResult, Integer reminderNumber, int mod,
+    private void addSeparateLine(String  lastReminder, int multiplyResult, Integer reminderNumber, int mod,
                                  StringBuilder reminder, String[] digits, StringBuilder result, int i){
         Integer tab = lastReminder.length() - String.valueOf(multiplyResult).length();
         result.append(createSeparateLine(reminderNumber, tab)).append("\n");
@@ -60,8 +59,7 @@ public class Divider {
     }
 
     private String createSeparateLine(int reminderNumber, Integer tab) {
-        return assembleString(tab, ' ') +
-                assembleString(String.valueOf(reminderNumber).length(), '-');
+        return assembleString(tab, ' ') + assembleString(String.valueOf(reminderNumber).length(), '-');
     }
 
     private String assembleString(int symbolsAmount, char symbol) {
@@ -72,7 +70,7 @@ public class Divider {
         return assembledString.toString();
     }
 
-    private void modifyResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
+    private void changeResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
         ArrayList<Integer> LinesBreakIndexes = findLinesBreakIndexes(result);
 
         int tab = String.valueOf(dividend).length() + 1 - LinesBreakIndexes.get(0);
@@ -86,13 +84,12 @@ public class Divider {
         result.replace(1, LinesBreakIndexes.get(0), dividend + "");
     }
 
-    private StringBuilder modifyResultToPrintNegativeDividend(StringBuilder result) {
+    private StringBuilder changeResultToPrintNegativeDividend(StringBuilder result) {
         ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
         for (int i = linesBreakIndexes.size() - 1; i >= 0; i--) {
             result.insert(linesBreakIndexes.get(i) + 1, " ");
         }
-        result = new StringBuilder(result.toString().replace(" │", "│"));
-        return result;
+        return new StringBuilder(result.toString().replace(" │", "│"));
     }
 
     private ArrayList<Integer> findLinesBreakIndexes(StringBuilder result) {
