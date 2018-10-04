@@ -1,44 +1,52 @@
 package com.foxminded.integerDivision;
 
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         boolean flag = true;
-        Main mainClass = new Main();
+        Divider divider = new Divider();
+        Scanner scanner = new Scanner(System.in);
+        int divisor;
+        int dividend;
+
         while (flag) {
-            int dividend = mainClass.inputNumber("dividend");
-            int divisor = mainClass.inputNumber("divisor");
+            System.out.println("Input dividend:");
+            try {
+                dividend = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid number format!");
+                scanner.next();
+                continue;
+            }
+
+            System.out.println("Input divisor:");
+            try {
+                divisor = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid number format!");
+                scanner.next();
+                continue;
+            }
+
             if (divisor == 0) {
                 System.out.println("Divisor can't be zero!!");
                 continue;
             }
             System.out.println("Result: ");
-            if (Math.abs(dividend) < divisor){
+            if (Math.abs(dividend) < Math.abs(divisor)) {
                 System.out.println(dividend + "/" + divisor + " = " + dividend / divisor + "\n");
                 continue;
             }
-            Divider divider = new Divider();
             String result = divider.doDivision(dividend, divisor);
             System.out.println(result + "\n");
-        }
-    }
+            System.out.println("If you want to close program input 'q'");
 
-    private int inputNumber(String numberName) {
-        System.out.println("Input a " + numberName);
-        Scanner scanner = new Scanner(System.in);
-        String numberStr = scanner.nextLine();
-        if (numberStr.equals("q"))
-            System.exit(0);
-        int dividend;
-        try {
-            dividend = Integer.parseInt(numberStr);
-            return dividend;
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format! Input " + numberName + " again.");
-            dividend = inputNumber(numberName);
+            scanner.nextLine();
+            String userResponse = scanner.nextLine();
+            if (userResponse.equals("q"))
+                flag = false;
         }
-        return dividend;
     }
 }

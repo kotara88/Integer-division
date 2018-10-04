@@ -1,26 +1,22 @@
 package com.foxminded.integerDivision;
-
-
 import java.util.ArrayList;
 
 public class Divider {
 
     public String doDivision(int dividend, int divisor) {
-
         if (divisor == 0)
             throw new IllegalArgumentException();
-
-        StringBuilder result = new StringBuilder();
         String[] digits = String.valueOf(Math.abs(dividend)).split("");
-        StringBuilder reminder = new StringBuilder();
-        return createFinalResult(digits, dividend, divisor, reminder, result);
+        return createLongDivisionString(digits, dividend, divisor);
     }
 
-    private String createFinalResult(String[] digits, int dividend, int divisor, StringBuilder reminder, StringBuilder result){
+    private String createLongDivisionString(String[] digits, int dividend, int divisor){
+        StringBuilder reminder = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < digits.length; i++) {
             createDividingColumn(divisor, reminder, digits, i, result);
         }
-        changeResultToPrint(dividend, divisor, result);
+        insertDividendAndDivisorInResult(dividend, divisor, result);
         if (dividend < 0) {
             result = changeResultToPrintNegativeDividend(result);
         }
@@ -70,18 +66,18 @@ public class Divider {
         return assembledString.toString();
     }
 
-    private void changeResultToPrint(Integer dividend, Integer divisor, StringBuilder result) {
-        ArrayList<Integer> LinesBreakIndexes = findLinesBreakIndexes(result);
+    private void insertDividendAndDivisorInResult(Integer dividend, Integer divisor, StringBuilder result) {
+        ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
 
-        int tab = String.valueOf(dividend).length() + 1 - LinesBreakIndexes.get(0);
-        result.insert(LinesBreakIndexes.get(2), assembleString(tab, ' ') +
+        int tab = String.valueOf(dividend).length() + 1 - linesBreakIndexes.get(0);
+        result.insert(linesBreakIndexes.get(2), assembleString(tab, ' ') +
                 "│" + dividend / divisor);
 
-        result.insert(LinesBreakIndexes.get(1), assembleString(tab, ' ') +
+        result.insert(linesBreakIndexes.get(1), assembleString(tab, ' ') +
                 "│" + assembleString(String.valueOf(dividend / divisor).length(), '-'));
 
-        result.insert(LinesBreakIndexes.get(0), "│" + divisor);
-        result.replace(1, LinesBreakIndexes.get(0), dividend + "");
+        result.insert(linesBreakIndexes.get(0), "│" + divisor);
+        result.replace(1, linesBreakIndexes.get(0), dividend + "");
     }
 
     private StringBuilder changeResultToPrintNegativeDividend(StringBuilder result) {
