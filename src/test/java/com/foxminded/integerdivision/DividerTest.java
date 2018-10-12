@@ -1,4 +1,4 @@
-package com.foxminded.integerDivision;
+package com.foxminded.integerdivision;
 
 
 import org.junit.Test;

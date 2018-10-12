@@ -1,4 +1,4 @@
-package com.foxminded.integerDivision;
+package com.foxminded.integerdivision;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,14 +15,7 @@ public class Main {
             System.out.println("Input dividend:");
             try {
                 dividend = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid number format!");
-                scanner.next();
-                continue;
-            }
-
-            System.out.println("Input divisor:");
-            try {
+                System.out.println("Input divisor:");
                 divisor = scanner.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Invalid number format!");
@@ -43,8 +36,7 @@ public class Main {
             System.out.println(result + "\n");
             System.out.println("If you want to close program input 'q'");
 
-            scanner.nextLine();
-            String userResponse = scanner.nextLine();
+            String userResponse = scanner.next();
             if (userResponse.equals("q"))
                 flag = false;
         }
