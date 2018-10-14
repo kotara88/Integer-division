@@ -8,6 +8,11 @@ public class Divider {
         if (divisor == 0) {
             throw new IllegalArgumentException();
         }
+
+        if (Math.abs(dividend) < Math.abs(divisor)) {
+            return  dividend + " / " + divisor + " = 0";
+        }
+
         String[] digits = String.valueOf(Math.abs(dividend)).split("");
         return createDivisionString(digits, dividend, divisor);
     }

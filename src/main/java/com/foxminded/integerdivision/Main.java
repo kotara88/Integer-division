@@ -28,14 +28,8 @@ public class Main {
                 continue;
             }
             System.out.println("Result: ");
-            if (Math.abs(dividend) < Math.abs(divisor)) {
-                System.out.println(dividend + "/" + divisor + " = " + dividend / divisor + "\n");
-                continue;
-            }
-            String result = divider.doDivision(dividend, divisor);
-            System.out.println(result + "\n");
+            System.out.println(divider.doDivision(dividend, divisor) + "\n");
             System.out.println("If you want to close program input 'q'");
-
             String userResponse = scanner.next();
             if (userResponse.equals("q"))
                 flag = false;
