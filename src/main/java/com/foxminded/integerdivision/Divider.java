@@ -22,9 +22,9 @@ public class Divider {
         for (int i = 0; i < digits.length; i++) {
             createDividingColumn(data, i);
         }
-        addOperandsToDividingString(dividend, divisor, data.getResult());
+        data.setResult(new StringBuilder(addOperandsToDividingString(dividend, divisor, data.getResult().toString())));
         if (dividend < 0) {
-            data.setResult(createDivisionStringWhenNegativeDividend(data.getResult()));
+            data.setResult(new StringBuilder(createDivisionStringWithNegativeDividend(data.getResult().toString())));
         }
         return data.getResult().toString().trim();
     }
@@ -71,29 +71,30 @@ public class Divider {
         return assembledString.toString();
     }
 
-    private void addOperandsToDividingString(Integer dividend, Integer divisor, StringBuilder result) {
+    private String addOperandsToDividingString(Integer dividend, Integer divisor, String result) {
         ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
-
+        StringBuilder tempString = new StringBuilder(result);
         int tab = String.valueOf(dividend).length() + 1 - linesBreakIndexes.get(0);
-        result.insert(linesBreakIndexes.get(2), assembleString(tab, ' ') +
+        tempString.insert(linesBreakIndexes.get(2), assembleString(tab, ' ') +
                 "│" + dividend / divisor);
 
-        result.insert(linesBreakIndexes.get(1), assembleString(tab, ' ') +
+        tempString.insert(linesBreakIndexes.get(1), assembleString(tab, ' ') +
                 "│" + assembleString(String.valueOf(dividend / divisor).length(), '-'));
 
-        result.insert(linesBreakIndexes.get(0), "│" + divisor);
-        result.replace(1, linesBreakIndexes.get(0), dividend + "");
+        tempString.insert(linesBreakIndexes.get(0), "│" + divisor);
+        return tempString.replace(1, linesBreakIndexes.get(0), dividend + "").toString();
     }
 
-    private StringBuilder createDivisionStringWhenNegativeDividend(StringBuilder result) {
+    private String createDivisionStringWithNegativeDividend(String result) {
+        StringBuilder tempString = new StringBuilder(result);
         ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
         for (int i = linesBreakIndexes.size() - 1; i >= 0; i--) {
-            result.insert(linesBreakIndexes.get(i) + 1, " ");
+            tempString.insert(linesBreakIndexes.get(i) + 1, " ");
         }
-        return new StringBuilder(result.toString().replace(" │", "│"));
+        return tempString.toString().replace(" │", "│");
     }
 
-    private ArrayList<Integer> findLinesBreakIndexes(StringBuilder result) {
+    private ArrayList<Integer> findLinesBreakIndexes(String result) {
         ArrayList<Integer> linesBreakIndexes = new ArrayList<Integer>();
         for (int i = 0; i < result.length(); i++) {
             if (result.charAt(i) == '\n') {
