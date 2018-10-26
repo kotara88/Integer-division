@@ -23,45 +23,78 @@ public class DividerTest {
         division = new Divider();
         negativeDividend = -1234;
         positiveDividend = 1234;
-        smallDividend = 1;
+        smallDividend = 7;
         positiveDivisor = 12;
         negativeDivisor = -12;
         zeroDivisor = 0;
         dividingProcessStringWithPositiveOperands =
                 "_1234│12\n" +
-                        " 12  │---\n" +
-                        " --  │102\n" +
+                        " 12  │--------\n" +
+                        " --  │102.8(3)\n" +
                         "  _34\n" +
                         "   24\n" +
                         "   --\n" +
-                        "   10";
+                        "  _100\n" +
+                        "    96\n" +
+                        "    ---\n" +
+                        "    _40\n" +
+                        "     36\n" +
+                        "     --\n" +
+                        "      4";
         dividingProcessStringWithNegativeDividendAndPositiveDivisor =
                 "_-1234│12\n" +
-                        "  12  │----\n" +
-                        "  --  │-102\n" +
+                        "  12  │--------\n" +
+                        "  --  │102.8(3)\n" +
                         "   _34\n" +
                         "    24\n" +
                         "    --\n" +
-                        "    10";
+                        "   _100\n" +
+                        "     96\n" +
+                        "     ---\n" +
+                        "     _40\n" +
+                        "      36\n" +
+                        "      --\n" +
+                        "       4";
         dividingProcessStringWithNegativeOperands =
                 "_-1234│-12\n" +
-                        "  12  │---\n" +
-                        "  --  │102\n" +
+                        "  12  │--------\n" +
+                        "  --  │102.8(3)\n" +
                         "   _34\n" +
                         "    24\n" +
                         "    --\n" +
-                        "    10";
+                        "   _100\n" +
+                        "     96\n" +
+                        "     ---\n" +
+                        "     _40\n" +
+                        "      36\n" +
+                        "      --\n" +
+                        "       4";
         dividingProcessStringWithPositiveDividendAndNegativeDivisor =
                 "_1234│-12\n" +
-                        " 12  │----\n" +
-                        " --  │-102\n" +
+                        " 12  │--------\n" +
+                        " --  │102.8(3)\n" +
                         "  _34\n" +
                         "   24\n" +
                         "   --\n" +
-                        "   10";
+                        "  _100\n" +
+                        "    96\n" +
+                        "    ---\n" +
+                        "    _40\n" +
+                        "     36\n" +
+                        "     --\n" +
+                        "      4";
 
-        dividingProcessStringWithDividendLessThanDivisor = "1 / 12 = 0";
-
+        dividingProcessStringWithDividendLessThanDivisor =
+                "_7 │12\n" +
+                        " 60│-------\n" +
+                        " --│0.58(3)\n" +
+                        "_100\n" +
+                        "  96\n" +
+                        "  ---\n" +
+                        "  _40\n" +
+                        "   36\n" +
+                        "   --\n" +
+                        "    4";
     }
 
     @Test

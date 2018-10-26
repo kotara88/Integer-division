@@ -2,20 +2,26 @@ package com.foxminded.integerdivision;
 
 public class DivisionData {
     private int divisor;
+    private int dividend;
     private int mod;
     private int multiplyResult;
-    private Integer reminderNumber;
+    private int reminderNumber;
     private StringBuilder reminder;
     private StringBuilder result;
     private String[] digits;
     private String lastReminder;
 
-    public DivisionData(int divisor, String[] digits) {
+    public DivisionData(int dividend, int divisor, String[] digits) {
+        this.dividend = dividend;
         this.divisor = divisor;
         this.digits = digits;
         this.reminder = new StringBuilder();
         this.result = new StringBuilder();
 
+    }
+
+    public int getDividend() {
+        return dividend;
     }
 
     public int getDivisor() {
@@ -26,7 +32,7 @@ public class DivisionData {
         return mod;
     }
 
-    public Integer getReminderNumber() {
+    public int getReminderNumber() {
         return reminderNumber;
     }
 
@@ -37,7 +43,6 @@ public class DivisionData {
     public StringBuilder getResult() {
         return result;
     }
-
 
     public String[] getDigits() {
         return digits;
@@ -55,7 +60,7 @@ public class DivisionData {
         this.mod = mod;
     }
 
-    public void setReminderNumber(Integer reminderNumber) {
+    public void setReminderNumber(int reminderNumber) {
         this.reminderNumber = reminderNumber;
     }
 
