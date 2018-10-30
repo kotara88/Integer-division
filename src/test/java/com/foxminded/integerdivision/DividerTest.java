@@ -43,8 +43,8 @@ public class DividerTest {
                         "      4";
         dividingProcessStringWithNegativeDividendAndPositiveDivisor =
                 "_-1234│12\n" +
-                        "  12  │--------\n" +
-                        "  --  │102.8(3)\n" +
+                        "  12  │---------\n" +
+                        "  --  │-102.8(3)\n" +
                         "   _34\n" +
                         "    24\n" +
                         "    --\n" +
@@ -71,8 +71,8 @@ public class DividerTest {
                         "       4";
         dividingProcessStringWithPositiveDividendAndNegativeDivisor =
                 "_1234│-12\n" +
-                        " 12  │--------\n" +
-                        " --  │102.8(3)\n" +
+                        " 12  │---------\n" +
+                        " --  │-102.8(3)\n" +
                         "  _34\n" +
                         "   24\n" +
                         "   --\n" +
@@ -136,5 +136,4 @@ public class DividerTest {
     public void mustThrowIllegalArgumentException_WhenDivisorIsZero() {
         division.doDivision(positiveDividend, zeroDivisor);
     }
-
 }

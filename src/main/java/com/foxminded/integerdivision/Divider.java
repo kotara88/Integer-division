@@ -27,21 +27,18 @@ public class Divider {
     }
 
     private void createDividingColumn(DivisionData data) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        boolean flag = true;
+        ArrayList<Integer> reminders = new ArrayList<Integer>();
         int count = 0;
-        while (flag) {
-            try {
-                data.getReminder().append(data.getDigits()[count]);
-                data.setReminderNumber(Integer.parseInt(data.getReminder().toString()));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                data.setReminderNumber(Integer.parseInt(data.getReminder().append(0).toString()));
-                if (list.contains(data.getReminderNumber())) {
-                    data.getResult().append(String.format("%" + (count + 1) + "s", data.getReminderNumber() / 10)).append("\n");
-                    break;
-                } else {
-                    list.add(data.getReminderNumber());
+        while (true){
+            addNumberToReminder(count, data);
+            if(count > data.getDigits().length && reminders.contains(data.getReminderNumber())){
+                if(data.getReminderNumber() != 0){
+                    count += 1;
                 }
+                data.getResult().append(String.format("%" + count + "s", data.getReminderNumber() / 10)).append("\n");
+                break;
+            }else {
+                reminders.add(data.getReminderNumber());
             }
             if (data.getReminderNumber() >= Math.abs(data.getDivisor())) {
                 createIndent(data, count);
@@ -50,30 +47,35 @@ public class Divider {
         }
     }
 
-    private void createIndent(DivisionData data, int i) {
+    private void addNumberToReminder(int count, DivisionData data){
+        if(count < data.getDigits().length) {
+            data.getReminder().append(data.getDigits()[count]);
+        } else {
+            data.getReminder().append(0);
+        }
+        data.setReminderNumber(Integer.parseInt(data.getReminder().toString()));
+    }
+
+    private void createIndent(DivisionData data, int spaceCount) {
         data.setMultiplyResult(data.getReminderNumber() / data.getDivisor() * data.getDivisor());
         data.setMod(data.getReminderNumber() % data.getDivisor());
-        data.setLastReminder(String.format("%" + (i + 2) + "s", "_" + data.getReminderNumber()));
+        data.setLastReminder(String.format("%" + (spaceCount + 2) + "s", "_" + data.getReminderNumber()));
         data.getResult().append(data.getLastReminder()).append("\n");
-        String tabForMultiplyResult = String.format("%" + (i + 2) + "d", data.getMultiplyResult());
+        String tabForMultiplyResult = String.format("%" + (spaceCount + 2) + "d", data.getMultiplyResult());
         data.getResult().append(tabForMultiplyResult).append("\n");
-        addSeparateLine(data, i);
+        addSeparateLine(data);
     }
 
-    private void addSeparateLine(DivisionData data, int i) {
+    private void addSeparateLine(DivisionData data) {
         Integer tab = data.getLastReminder().length() - String.valueOf(data.getMultiplyResult()).length();
-        if (String.valueOf(data.getMultiplyResult()).length() == 1 && String.valueOf(data.getReminderNumber()).length() == 1) {
-            data.getResult().append(createSeparateLine(data.getReminderNumber(), tab)).append("\n");
-        } else if (String.valueOf(data.getMultiplyResult()).length() == 1) {
-            data.getResult().append(createSeparateLine(data.getReminderNumber(), tab - 1)).append("\n");
-        } else {
-            data.getResult().append(createSeparateLine(data.getReminderNumber(), tab)).append("\n");
+        if (String.valueOf(data.getMultiplyResult()).length() == 1  && String.valueOf(data.getReminderNumber()).length() != 1) {
+            tab -= 1;
         }
+        String separateLine = createSeparateLine(data.getReminderNumber(), tab);
+        data.getResult().append(separateLine).append("\n");
         data.getReminder().replace(0, data.getReminder().length(), data.getMod() + "");
         data.setReminderNumber(Integer.parseInt(data.getReminder().toString()));
-
     }
-
 
     private String createSeparateLine(int reminderNumber, Integer tab) {
         return assembleString(tab, ' ') + assembleString(String.valueOf(reminderNumber).length(), '-');
@@ -98,9 +100,9 @@ public class Divider {
                 "│" + assembleString(divisionResult.length(), '-'));
         tempString.insert(linesBreakIndexes.get(0), "│" + divisor);
         if (dividend < divisor) {
-            tempString.replace(1, linesBreakIndexes.get(0), dividend + " ").toString();
+            tempString.replace(1, linesBreakIndexes.get(0), dividend + " ");
         } else {
-            tempString.replace(1, linesBreakIndexes.get(0), String.valueOf(dividend)).toString();
+            tempString.replace(1, linesBreakIndexes.get(0), String.valueOf(dividend));
         }
         return tempString.toString();
     }
@@ -129,25 +131,21 @@ public class Divider {
             return "0";
         }
         StringBuilder result = new StringBuilder();
+        result.append(calculateTheDivisionPartBeforePoint(dividend, divisor));
         dividend = Math.abs(dividend);
         divisor = Math.abs(divisor);
-        result.append(calculateTheDivisionPartBeforePoint(dividend, divisor));
-        result.append(".");
         result.append(calculateTheDivisionPartAfterPoint(dividend, divisor));
         return result.toString();
     }
 
     private String calculateTheDivisionPartBeforePoint(int dividend, int divisor) {
         StringBuilder result = new StringBuilder();
-        int sign = (dividend < 0) ^ (divisor < 0) ? -1 : 1;
-        if (sign == -1) {
-            result.append("-");
-        }
         int initial = dividend / divisor;
         result.append(String.valueOf(initial));
         if (dividend % divisor == 0) {
             return result.toString();
         }
+        result.append(".");
         return result.toString();
     }
 
@@ -157,17 +155,16 @@ public class Divider {
         HashMap<Integer, Integer> reminders = new HashMap<Integer, Integer>();
         int index = 0;
         boolean repeating = false;
-        while (reminder > 0 && !repeating) {
+        while (reminder > 0) {
             if (reminders.containsKey(reminder)) {
                 index = reminders.get(reminder);
                 repeating = true;
                 break;
-            } else
+            } else{
                 reminders.put(reminder, result.length());
-
+            }
             reminder = reminder * 10;
-            int temp = reminder / divisor;
-            result.append(temp);
+            result.append(reminder / divisor);
             reminder = reminder % divisor;
         }
         if (repeating) {
