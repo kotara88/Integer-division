@@ -29,7 +29,7 @@ public class Divider {
     private void createDividingColumn(DivisionData data) {
         ArrayList<Integer> reminders = new ArrayList<Integer>();
         int count = 0;
-        while (true){
+        while (data.getReminderNumber() >= 0){
             addNumberToReminder(count, data);
             if(count > data.getDigits().length && reminders.contains(data.getReminderNumber())){
                 if(data.getReminderNumber() != 0){
