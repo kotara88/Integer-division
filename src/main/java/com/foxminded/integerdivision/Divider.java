@@ -89,7 +89,7 @@ public class Divider {
         return assembledString.toString();
     }
 
-    private String addOperandsToDividingString(Integer dividend, Integer divisor, String result) {
+    private String addOperandsToDividingString(int dividend, int divisor, String result) {
         String divisionResult = calculateFraction(dividend, divisor);
         ArrayList<Integer> linesBreakIndexes = findLinesBreakIndexes(result);
         StringBuilder tempString = new StringBuilder(result);
@@ -99,6 +99,11 @@ public class Divider {
         tempString.insert(linesBreakIndexes.get(1), assembleString(tab, ' ') +
                 "│" + assembleString(divisionResult.length(), '-'));
         tempString.insert(linesBreakIndexes.get(0), "│" + divisor);
+        return addDividendToDividingString(dividend, divisor, linesBreakIndexes, tempString.toString());
+    }
+
+    private String addDividendToDividingString(int dividend, int divisor, ArrayList<Integer> linesBreakIndexes, String result){
+        StringBuilder tempString = new StringBuilder(result);
         if (dividend < divisor) {
             tempString.replace(1, linesBreakIndexes.get(0), dividend + " ");
         } else {
@@ -163,14 +168,21 @@ public class Divider {
             } else{
                 reminders.put(reminder, result.length());
             }
-            reminder = reminder * 10;
-            result.append(reminder / divisor);
-            reminder = reminder % divisor;
+            reminder = calculateNextReminder(reminder, divisor, result);
         }
         if (repeating) {
-            result.append(")");
-            result.insert(index, "(");
+            insertParentheses(result, index);
         }
         return result.toString();
+    }
+
+    private void insertParentheses(StringBuilder result, int index){
+        result.append(")");
+        result.insert(index, "(");
+    }
+    private int calculateNextReminder(int reminder, int divisor, StringBuilder result){
+        reminder = reminder * 10;
+        result.append(reminder / divisor);
+        return reminder % divisor;
     }
 }
