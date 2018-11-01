@@ -6,10 +6,12 @@ public class DivisionData {
     private int mod;
     private int multiplyResult;
     private int reminderNumber;
+    private int index;
     private StringBuilder reminder;
     private StringBuilder result;
     private String[] digits;
     private String lastReminder;
+    private boolean repeating;
 
     public DivisionData(int dividend, int divisor, String[] digits) {
         this.dividend = dividend;
@@ -17,7 +19,19 @@ public class DivisionData {
         this.digits = digits;
         this.reminder = new StringBuilder();
         this.result = new StringBuilder();
+    }
 
+    public DivisionData(int divisor) {
+        this.index = 0;
+        this.repeating = false;
+        this.result = new StringBuilder();
+        this.divisor = divisor;
+    }
+
+    public DivisionData(int dividend, int divisor, StringBuilder result) {
+        this.dividend = dividend;
+        this.divisor = divisor;
+        this.result = result;
     }
 
     public int getDividend() {
@@ -56,6 +70,14 @@ public class DivisionData {
         return lastReminder;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public boolean isRepeating() {
+        return repeating;
+    }
+
     public void setMod(int mod) {
         this.mod = mod;
     }
@@ -74,5 +96,13 @@ public class DivisionData {
 
     public void setResult(StringBuilder result) {
         this.result = result;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void setRepeating(boolean repeating) {
+        this.repeating = repeating;
     }
 }

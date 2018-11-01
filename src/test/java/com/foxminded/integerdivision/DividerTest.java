@@ -12,11 +12,11 @@ public class DividerTest {
     private int positiveDivisor;
     private int negativeDivisor;
     private int zeroDivisor;
-    private String dividingProcessStringWithPositiveOperands;
-    private String dividingProcessStringWithNegativeDividendAndPositiveDivisor;
-    private String dividingProcessStringWithNegativeOperands;
-    private String dividingProcessStringWithPositiveDividendAndNegativeDivisor;
-    private String dividingProcessStringWithDividendLessThanDivisor;
+    private String stringWithPositiveOperands;
+    private String stringWithNegativeDividendAndPositiveDivisor;
+    private String stringWithNegativeOperands;
+    private String stringWithPositiveDividendAndNegativeDivisor;
+    private String stringWithDividendLessThanDivisor;
 
     @Before
     public void initialize() {
@@ -27,7 +27,7 @@ public class DividerTest {
         positiveDivisor = 12;
         negativeDivisor = -12;
         zeroDivisor = 0;
-        dividingProcessStringWithPositiveOperands =
+        stringWithPositiveOperands =
                 "_1234│12\n" +
                         " 12  │--------\n" +
                         " --  │102.8(3)\n" +
@@ -41,7 +41,7 @@ public class DividerTest {
                         "     36\n" +
                         "     --\n" +
                         "      4";
-        dividingProcessStringWithNegativeDividendAndPositiveDivisor =
+        stringWithNegativeDividendAndPositiveDivisor =
                 "_-1234│12\n" +
                         "  12  │---------\n" +
                         "  --  │-102.8(3)\n" +
@@ -55,7 +55,7 @@ public class DividerTest {
                         "      36\n" +
                         "      --\n" +
                         "       4";
-        dividingProcessStringWithNegativeOperands =
+        stringWithNegativeOperands =
                 "_-1234│-12\n" +
                         "  12  │--------\n" +
                         "  --  │102.8(3)\n" +
@@ -69,7 +69,7 @@ public class DividerTest {
                         "      36\n" +
                         "      --\n" +
                         "       4";
-        dividingProcessStringWithPositiveDividendAndNegativeDivisor =
+        stringWithPositiveDividendAndNegativeDivisor =
                 "_1234│-12\n" +
                         " 12  │---------\n" +
                         " --  │-102.8(3)\n" +
@@ -84,7 +84,7 @@ public class DividerTest {
                         "     --\n" +
                         "      4";
 
-        dividingProcessStringWithDividendLessThanDivisor =
+        stringWithDividendLessThanDivisor =
                 "_7 │12\n" +
                         " 60│-------\n" +
                         " --│0.58(3)\n" +
@@ -99,35 +99,35 @@ public class DividerTest {
 
     @Test
     public void mustCreateCorrectDividingProcessString_WhenDividendAndDivisorArePositive() {
-        String expected = dividingProcessStringWithPositiveOperands;
+        String expected = stringWithPositiveOperands;
         String actual = division.doDivision(positiveDividend, positiveDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
     public void mustCreateCorrectDividingProcessString_WhenDividendIsNegativeAndDivisorIsPositive() {
-        String expected = dividingProcessStringWithNegativeDividendAndPositiveDivisor;
+        String expected = stringWithNegativeDividendAndPositiveDivisor;
         String actual = division.doDivision(negativeDividend, positiveDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
     public void mustCreateCorrectDividingProcessString_WhenDividendAndDivisorAreNegative() {
-        String expected = dividingProcessStringWithNegativeOperands;
+        String expected = stringWithNegativeOperands;
         String actual = division.doDivision(negativeDividend, negativeDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
     public void mustCreateCorrectDividingProcessString_WhenDividendIsPositiveAndDivisorIsNegative() {
-        String expected = dividingProcessStringWithPositiveDividendAndNegativeDivisor;
+        String expected = stringWithPositiveDividendAndNegativeDivisor;
         String actual = division.doDivision(positiveDividend, negativeDivisor);
         assertEquals(expected, actual);
     }
 
     @Test
     public void mustCreateCorrectDividingProcessString_WhenDividendLessThanDivisor() {
-        String expected = dividingProcessStringWithDividendLessThanDivisor;
+        String expected = stringWithDividendLessThanDivisor;
         String actual = division.doDivision(smallDividend, positiveDivisor);
         assertEquals(expected, actual);
     }

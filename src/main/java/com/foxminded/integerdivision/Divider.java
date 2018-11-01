@@ -29,15 +29,15 @@ public class Divider {
     private void createDividingColumn(DivisionData data) {
         ArrayList<Integer> reminders = new ArrayList<Integer>();
         int count = 0;
-        while (data.getReminderNumber() >= 0){
+        while (data.getReminderNumber() >= 0) {
             addNumberToReminder(count, data);
-            if(count > data.getDigits().length && reminders.contains(data.getReminderNumber())){
-                if(data.getReminderNumber() != 0){
+            if (count > data.getDigits().length && reminders.contains(data.getReminderNumber())) {
+                if (data.getReminderNumber() != 0) {
                     count += 1;
                 }
                 data.getResult().append(String.format("%" + count + "s", data.getReminderNumber() / 10)).append("\n");
                 break;
-            }else {
+            } else {
                 reminders.add(data.getReminderNumber());
             }
             if (data.getReminderNumber() >= Math.abs(data.getDivisor())) {
@@ -47,8 +47,8 @@ public class Divider {
         }
     }
 
-    private void addNumberToReminder(int count, DivisionData data){
-        if(count < data.getDigits().length) {
+    private void addNumberToReminder(int count, DivisionData data) {
+        if (count < data.getDigits().length) {
             data.getReminder().append(data.getDigits()[count]);
         } else {
             data.getReminder().append(0);
@@ -68,7 +68,7 @@ public class Divider {
 
     private void addSeparateLine(DivisionData data) {
         Integer tab = data.getLastReminder().length() - String.valueOf(data.getMultiplyResult()).length();
-        if (String.valueOf(data.getMultiplyResult()).length() == 1  && String.valueOf(data.getReminderNumber()).length() != 1) {
+        if (String.valueOf(data.getMultiplyResult()).length() == 1 && String.valueOf(data.getReminderNumber()).length() != 1) {
             tab -= 1;
         }
         String separateLine = createSeparateLine(data.getReminderNumber(), tab);
@@ -99,15 +99,15 @@ public class Divider {
         tempString.insert(linesBreakIndexes.get(1), assembleString(tab, ' ') +
                 "│" + assembleString(divisionResult.length(), '-'));
         tempString.insert(linesBreakIndexes.get(0), "│" + divisor);
-        return addDividendToDividingString(dividend, divisor, linesBreakIndexes, tempString.toString());
+        return addDividendToDividingString(new DivisionData(dividend, divisor, tempString), linesBreakIndexes);
     }
 
-    private String addDividendToDividingString(int dividend, int divisor, ArrayList<Integer> linesBreakIndexes, String result){
-        StringBuilder tempString = new StringBuilder(result);
-        if (dividend < divisor) {
-            tempString.replace(1, linesBreakIndexes.get(0), dividend + " ");
+    private String addDividendToDividingString(DivisionData data, ArrayList<Integer> linesBreakIndexes) {
+        StringBuilder tempString = new StringBuilder(data.getResult());
+        if (data.getDividend() < data.getDivisor()) {
+            tempString.replace(1, linesBreakIndexes.get(0), data.getDividend() + " ");
         } else {
-            tempString.replace(1, linesBreakIndexes.get(0), String.valueOf(dividend));
+            tempString.replace(1, linesBreakIndexes.get(0), String.valueOf(data.getDividend()));
         }
         return tempString.toString();
     }
@@ -136,14 +136,14 @@ public class Divider {
             return "0";
         }
         StringBuilder result = new StringBuilder();
-        result.append(calculateTheDivisionPartBeforePoint(dividend, divisor));
+        result.append(calculateDivisionPartBeforePoint(dividend, divisor));
         dividend = Math.abs(dividend);
         divisor = Math.abs(divisor);
-        result.append(calculateTheDivisionPartAfterPoint(dividend, divisor));
+        result.append(calculateDivisionPartAfterPoint(dividend, divisor));
         return result.toString();
     }
 
-    private String calculateTheDivisionPartBeforePoint(int dividend, int divisor) {
+    private String calculateDivisionPartBeforePoint(int dividend, int divisor) {
         StringBuilder result = new StringBuilder();
         int initial = dividend / divisor;
         result.append(String.valueOf(initial));
@@ -154,35 +154,39 @@ public class Divider {
         return result.toString();
     }
 
-    private String calculateTheDivisionPartAfterPoint(int dividend, int divisor) {
-        StringBuilder result = new StringBuilder();
-        int reminder = dividend % divisor;
-        HashMap<Integer, Integer> reminders = new HashMap<Integer, Integer>();
-        int index = 0;
-        boolean repeating = false;
-        while (reminder > 0) {
-            if (reminders.containsKey(reminder)) {
-                index = reminders.get(reminder);
-                repeating = true;
-                break;
-            } else{
-                reminders.put(reminder, result.length());
-            }
-            reminder = calculateNextReminder(reminder, divisor, result);
+    private String calculateDivisionPartAfterPoint(int dividend, int divisor) {
+        DivisionData data = new DivisionData(divisor);
+        data.setReminderNumber(dividend % divisor);
+        data = calculateRepeatingPart(data);
+        if (data.isRepeating()) {
+            insertParentheses(data);
         }
-        if (repeating) {
-            insertParentheses(result, index);
-        }
-        return result.toString();
+        return data.getResult().toString();
     }
 
-    private void insertParentheses(StringBuilder result, int index){
-        result.append(")");
-        result.insert(index, "(");
+    private DivisionData calculateRepeatingPart(DivisionData data) {
+        HashMap<Integer, Integer> reminders = new HashMap<Integer, Integer>();
+        while (data.getReminderNumber() > 0) {
+            if (reminders.containsKey(data.getReminderNumber())) {
+                data.setIndex(reminders.get(data.getReminderNumber()));
+                data.setRepeating(true);
+                break;
+            } else {
+                reminders.put(data.getReminderNumber(), data.getResult().length());
+            }
+            data.setReminderNumber(calculateNextReminder(data));
+        }
+        return data;
     }
-    private int calculateNextReminder(int reminder, int divisor, StringBuilder result){
-        reminder = reminder * 10;
-        result.append(reminder / divisor);
-        return reminder % divisor;
+
+    private void insertParentheses(DivisionData data) {
+        data.getResult().append(")");
+        data.getResult().insert(data.getIndex(), "(");
+    }
+
+    private int calculateNextReminder(DivisionData data) {
+        data.setReminderNumber(data.getReminderNumber() * 10);
+        data.getResult().append(data.getReminderNumber() / data.getDivisor());
+        return data.getReminderNumber() % data.getDivisor();
     }
 }
