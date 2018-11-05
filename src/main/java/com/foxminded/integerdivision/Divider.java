@@ -67,7 +67,7 @@ public class Divider {
     }
 
     private void addSeparateLine(DivisionData data) {
-        Integer tab = data.getLastReminder().length() - String.valueOf(data.getMultiplyResult()).length();
+        int tab = data.getLastReminder().length() - String.valueOf(data.getMultiplyResult()).length();
         if (String.valueOf(data.getMultiplyResult()).length() == 1 && String.valueOf(data.getReminderNumber()).length() != 1) {
             tab -= 1;
         }
